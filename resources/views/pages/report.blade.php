@@ -5,10 +5,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">  
     <meta name="csrf-token" content="{{ csrf_token() }}">
     <title>Halaman Report</title>  
-    <!-- Bootstrap CSS -->  
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/css/bootstrap.min.css" rel="stylesheet">  
     <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-icons/1.10.1/font/bootstrap-icons.css" rel="stylesheet">
-
     <style>  
         .sidebar {  
             position: fixed;  
@@ -21,6 +19,7 @@
         }  
         .main-content {  
             margin-right: 340px;  
+            padding-right: 20px;  
         }  
         .card-js {  
             display: flex;  
@@ -53,41 +52,61 @@
         .container {  
             margin-left: 50px;  
         }  
-        .btn-success {  
-            width: 100%;  
+        .btn-primary {  
+            width: 60px;  
+            height: 60px;
+            margin-top: 15px;
+            margin-left: 550px;  
+            padding: 0;  
             text-align: center;  
-            background-color: #28a745;
+            background-color: #007bff;  
             color: white;  
             border: none;  
-            padding: 10px;  
-            border-radius: 5px;  
-            font-size: 16px;  
-            display: flex;  
-            align-items: center;  
-            justify-content: center;  
-            gap: 5px;  
+            border-radius: 50%;  
+            font-size: 24px;  
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);  
+            transition: background-color 0.3s, transform 0.3s;  
         }  
-        .btn-success:hover {  
-            background-color: #218838;  
-        }  
-
+        .btn-primary:hover {  
+            background-color: #0056b3;  
+            transform: translateY(-4px);  
+        }
+        .sidebar .btn-primary i {
+            font-size: 28px;
+        }
         .card-body-left-margin {
-    margin-left: 15px;
-}
-
-.text-description {
-    font-size: 14px; 
-    font-weight: bold; 
-    text-decoration: underline; 
-    color: #000; 
-    display: inline-block; 
-    max-width: 200px;
-    white-space: nowrap;
-    overflow: hidden; 
-    text-overflow: ellipsis; 
-}
-
-        
+            margin-left: 15px;
+        }
+        .text-description {
+            font-size: 14px; 
+            font-weight: bold; 
+            text-decoration: underline; 
+            color: #000; 
+            display: inline-block; 
+            max-width: 200px;
+            white-space: nowrap;
+            overflow: hidden; 
+            text-overflow: ellipsis; 
+        }
+        .card-js .bi-eye {
+            margin-right: 5px;
+            color: #007bff; 
+        }
+        .card-js .bi-heart {
+            margin-right: 5px;
+            color: #e25555; 
+            cursor: pointer; 
+        }
+        .card-js span {
+            display: inline-block;
+            margin-right: 10px;
+        }
+        .alert {
+            margin-right: 525px; 
+        }
     </style>  
 </head>  
 <body>  
@@ -124,33 +143,20 @@
                             {{ $report->description }}
                         </a>
                     </h6>
-                    
                     <p>Email: {{ $report->user->email ?? 'Email tidak tersedia' }}</p>
                     <small>Dibuat pada: {{ \Carbon\Carbon::parse($report->created_at)->format('d/m/Y') }}</small> <br>
-            
-                    <form action="{{ route('report.vote', $report->id) }}" method="POST" style="display: inline;">
+                    <form action="{{ route('report.vote', $report->id) }}" method="POST" style="display: inline;" id="voteForm{{ $report->id }}">
                         @csrf
-                        <button type="submit" class="btn btn-sm btn-outline-success">
-                            <i class="bi bi-hand-thumbs-up"></i> Vote
-                        </button>
                     </form>
-                    <span>{{ $report->votes }} Votes</span>
-                    
-                    @if(session('success'))
-                        <div class="alert alert-success mt-2">
-                            {{ session('success') }}
-                        </div>
-                    @endif
-                                   
+                    <span>
+                        <i class="bi bi-heart" onclick="document.getElementById('voteForm{{ $report->id }}').submit();"></i>
+                        {{ $report->votes }} Votes
+                    </span>
+                    <span><i class="bi bi-eye"></i> {{ $report->viewers }} Viewers</span>        
                 </div>
             </div>
-
-        @endforeach
+            @endforeach
         </div>
-        
-        
-
-        </div>  
     </div>  
 
     <div class="sidebar">  
@@ -169,12 +175,11 @@
                 </ol>  
             </div>  
         </div>  
-        <button class="btn btn-success" onclick="location.href='{{ route('report.create') }}'">  
-            <i class="bi bi-plus-circle"></i> Create  
+        <button class="btn btn-primary" onclick="location.href='{{ route('report.create') }}'">  
+            <i class="bi bi-pencil fs-3"></i>  
         </button>  
     </div>  
 
-    <!-- Link JS -->  
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/js/bootstrap.bundle.min.js"></script>  
     <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>  
     <script>  

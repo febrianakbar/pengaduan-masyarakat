@@ -12,8 +12,16 @@ class ReportController extends Controller
     public function index()
     {
         $reports = Report::all();
+    
+        foreach ($reports as $report) {
+            $report->increment('viewers'); // perbarui viewers
+            $report->save(); 
+        }
+    
         return view('report.index', compact('reports'));
     }
+    
+
 
     public function page()
     {
@@ -50,7 +58,7 @@ class ReportController extends Controller
         $villageName = file_get_contents("https://www.emsifa.com/api-wilayah-indonesia/api/village/{$request->village}.json");
 
         $imagePath = null;
-        if ($request->hasFile('image')) {
+        if ($request->hasFile('image')) { // cek ada file img apa engga
             $imagePath = $request->file('image')->store('reports', 'public');
         }
 
@@ -70,10 +78,7 @@ class ReportController extends Controller
 
     public function show($id)
     {
-        // Ambil laporan berdasarkan ID dengan relasi komentar
         $report = Report::with('comments')->findOrFail($id);
-
-        // Kirim data laporan ke view
         return view('pages.comment', compact('report'));
     }
 

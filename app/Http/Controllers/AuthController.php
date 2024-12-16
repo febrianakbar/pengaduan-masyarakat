@@ -22,7 +22,7 @@ class AuthController extends Controller
         ]);
 
         if ($request->action === 'login') {
-            if (Auth::attempt($request->only('email', 'password'))) {
+            if (Auth::attempt($request->only('email', 'password'))) { // kombinasi email sama pass
                 $user = Auth::user();
 
     
@@ -31,7 +31,7 @@ class AuthController extends Controller
                 } elseif ($user->role === 'GUEST') {
                     return redirect()->route('pages.report')->with('success', 'Login berhasil sebagai GUEST.');
                 }
-
+                // tidak cocok
                 return abort(403, 'Akses tidak diizinkan.');
             }
 
@@ -40,7 +40,7 @@ class AuthController extends Controller
 
         
         if ($request->action === 'register') {
-            $user = User::where('email', $request->email)->first();
+            $user = User::where('email', $request->email)->first(); // terdaftar apa belum
             if ($user) {
                 return back()->withErrors(['email' => 'Email sudah terdaftar.']);
             }
@@ -51,20 +51,19 @@ class AuthController extends Controller
                 'role' => 'GUEST', 
             ]);
 
-            Auth::login($user);
-            return redirect()->route('report.index')->with('success', 'Akun terbuat. Anda telah login.');
+            Auth::login($user); // otomatis login
+            return redirect()->route('pages.report')->with('success', 'Akun terbuat. Anda telah login.');
         }
 
         return back()->withErrors(['action' => 'Aksi tidak valid.']);
     }
 
-    public function logout(Request $request)
+     public function logout(Request $request)
     {
         Auth::logout();
-
-        $request->session()->invalidate();
+        $request->session()->invalidate(); // sesi lama
         $request->session()->regenerateToken();
 
-        return redirect()->route('login');
+        return redirect('login')->with('success', 'Anda berhasil logout.');
     }
 }

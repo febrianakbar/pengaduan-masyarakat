@@ -39,13 +39,25 @@
     </style>
 </head>
 <body>
+    <nav class="navbar navbar-expand-lg navbar-light bg-light shadow-sm">
+        <div class="container">
+            <a class="navbar-brand d-flex align-items-center" href="#">
+                <i class="fas fa-globe me-2"></i>
+                <span>Pengaduan</span>
+            </a>
+            <form id="logout-form" action="{{ route('logout') }}" method="POST" class="d-inline">
+                @csrf
+                <button type="submit" class="btn btn-outline-danger">Logout</button>
+            </form>            
+        </div>
+    </nav>
+
     <div class="container my-4">
-        <!-- Looping untuk setiap Pengaduan -->
         @foreach($reports as $report)
         <div class="card mb-3">
             <div class="card-header d-flex justify-content-between">
                 <span>Pengaduan {{ \Carbon\Carbon::parse($report->created_at)->format('d F Y') }}</span>
-                <i class="fas fa-chevron-down toggle-icon" onclick="toggleDetails(this)"></i> <!-- Ikon Panah -->
+                <i class="fas fa-chevron-down toggle-icon" onclick="toggleDetails(this)"></i>
             </div>
             <div class="card-body">
                 <div class="btn-group" role="group">
@@ -54,7 +66,6 @@
                     <button class="btn btn-light" onclick="showSection(this, 'status')">Status</button>
                 </div>
 
-                <!-- Data Section -->
                 <div class="content-section" id="data">
                     <h5 class="card-title mt-3">Data</h5>
                     <ul>
@@ -64,7 +75,6 @@
                     </ul>
                 </div>
 
-                <!-- Gambar Section -->
                 <div class="content-section" id="gambar">
                     <h5 class="card-title mt-3">Gambar</h5>
                     @if($report->image)
@@ -74,7 +84,6 @@
                     @endif
                 </div>
 
-                <!-- Status Section -->
                 <div class="content-section" id="status">
                     <h5 class="card-title mt-3">Status</h5>
                     <p><strong>Status:</strong> {{ $report->status }}</p>

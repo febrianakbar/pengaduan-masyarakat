@@ -15,9 +15,9 @@ return new class extends Migration
             $table->id();
             $table->string('email')->unique();
             $table->string('password');
-            $table->enum('role', ['GUEST', 'STAFF', 'HEAD_STAFF'])->default('GUEST'); // Menambahkan default value
-            $table->timestamp('email_verified_at')->nullable(); // Menambahkan kolom untuk verifikasi email jika diperlukan
-            $table->rememberToken(); // Untuk fitur "remember me" pada autentikasi
+            $table->enum('role', ['GUEST', 'STAFF', 'HEAD_STAFF'])->default('GUEST'); 
+            $table->timestamp('email_verified_at')->nullable(); 
+            $table->rememberToken();
             $table->timestamps();
         });
     }

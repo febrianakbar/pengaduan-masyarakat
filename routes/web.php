@@ -24,6 +24,7 @@ Route::get('/', function () {
 
 Route::get('/login', [AuthController::class, 'showLoginForm'])->name('login');
 Route::post('/auth', [AuthController::class, 'authenticate'])->name('auth');
+Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
 
 // Report Routes
 Route::prefix('report')->group(function () {

@@ -12,7 +12,7 @@ class StaffSeeder extends Seeder
     {
         User::create([
             'email' => 'staff@example.com',
-            'password' => Hash::make('password123'), // Password aman
+            'password' => Hash::make('12345678'), // Password aman
             'role' => 'staff',
         ]);
     }
